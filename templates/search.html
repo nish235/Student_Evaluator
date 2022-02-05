@@ -1,0 +1,215 @@
+{% extends 'base.html' %}
+
+          
+
+<!-- Title Started -->
+
+{% block title %} Search {% endblock title %}
+
+<!-- Title Ended -->
+
+
+<!-- Body Started -->
+
+{% block body %}
+
+<!-- Tabel Containing Data Started -->
+<section class="text-gray-400 bg-gray-300 body-font relative">
+  <div class="container-fluid px-5 py-16 mx-auto">
+    <div class="flex flex-col text-center w-full mb-60">
+
+      <!-- Search Box Started -->
+      <form action="sendemail" method="POST">
+        {% csrf_token %}
+      <div class="pt-2 pb-5 relative mx-auto text-gray-700">
+          Search By : 
+          <select class="border-2 border-gray-300 bg-white h-11 px-5 pr-16 rounded-full text-sm focus:outline-none" name="search" id="search">
+            <option value="name_of_student">Student Name</option>
+            <option value="name_of_college">College Name</option>
+            <option value="branch">Branch Name</option>
+            <option value="year">Year</option>
+            <option value="age">Age</option>
+            <option value="test_date">Gender</option>
+          </select>
+        <input class="border-2 border-gray-300 bg-white h-11 px-5 pr-16 ml-4 rounded-full text-sm focus:outline-none"
+          type="search" name="search" placeholder="">
+        <button
+          class="inline-flex items-center ml-4 bg-gray-600 border-0 text-gray-200 py-2 px-3 focus:outline-none hover:bg-gray-700 rounded-full text-base mt-4 md:mt-0">SEARCH
+
+        </button>
+        <button
+          class="ml-72 inline-flex items-center bg-gray-600 border-0 text-gray-200 py-2 px-3 focus:outline-none hover:bg-gray-700 rounded-full text-base mt-4 md:mt-0">Download PDF
+
+        </button>
+        <!-- <button
+          class="ml-96 inline-flex items-center bg-gray-600 border-0 text-gray-200 py-1 px-3 focus:outline-none hover:bg-gray-700 rounded-full text-base mt-4 md:mt-0">Send as Email
+
+        </button> -->
+        
+        <!-- <button type="submit" class="modal-open ml-96 bg-transparent border border-gray-500 hover:border-indigo-500 text-gray-500 hover:text-indigo-500 font-bold py-2 px-4 rounded-full">Send Email</button> -->
+        
+        </div>
+      </form>
+        
+
+      
+
+      <!-- Search Box Ended -->
+
+
+      <!-- Data Table Started -->
+
+      <div class="flex flex-col">
+        <div class="-my-2 overflow-x-auto sm:-mx-auto lg:-mx-auto">
+          <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+            <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+              <table class="min-w-full divide-y divide-gray-200" id="dataTable">
+                <thead class="bg-gray-500">
+                  <tr>
+
+                    <th scope="col"
+                      class="px-6 py-3 text-center text-xs font-medium text-white uppercase tracking-wider">
+                      <input type="checkbox" id="checkAll"  >
+                    </th>
+                    <th scope="col"
+                      class="px-6 py-3 text-center text-xs font-medium text-white uppercase tracking-wider">
+                      Name Of Student
+                    </th>
+                    <th scope="col"
+                      class="px-6 py-3 text-center text-xs font-medium text-white uppercase tracking-wider">
+                      Name Of College
+                    </th>
+                    <th scope="col"
+                      class="px-6 py-3 text-center text-xs font-medium text-white uppercase tracking-wider">
+                      Branch/Stream
+                    </th>
+                    <th scope="col"
+                      class="px-6 py-3 text-center text-xs font-medium text-white uppercase tracking-wider">
+                      Year
+                    </th>
+                    <th scope="col"
+                      class="px-6 py-3 text-center text-xs font-medium text-white uppercase tracking-wider">
+                      Age
+                    </th>
+                    <th scope="col"
+                      class="px-6 py-3 text-center text-xs font-medium text-white uppercase tracking-wider">
+                      Gender
+                    </th>
+                    <th scope="col"
+                      class="px-6 py-3 text-center text-xs font-medium text-white uppercase tracking-wider">
+                      Report
+                    </th>
+                    
+                    
+                  </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                {% for student in students %}
+                  <tr>
+                    <td class="px-6 py-3 whitespace-nowrap">
+                      <input type="checkbox" id="check1" name="chkbx" value="{{student.student_id}}">
+
+                    </td>
+                    <td class="px-6 py-3 whitespace-nowrap">
+                      <div class="text-sm font-medium text-gray-900">
+                        <a href="{% url 'update' student.student_id %}">
+                          {{student.first_name}} {{student.last_name}}
+                        </a>
+                      </div>
+
+                    </td>
+                    <td class="px-6 py-3 whitespace-nowrap">
+                      <div class="text-sm text-gray-900">{{student.college_name}}</div>
+
+                    </td>
+                    <td class="px-6 py-3 whitespace-nowrap">
+                      <div class="text-sm text-gray-900">{{student.branch_name}}</div>
+                    </td>
+                    <td class="px-6 py-3 whitespace-nowrap">
+                      <div class="text-sm text-gray-900">{{student.student_year}}</div>
+                    </td>
+                    <td class="px-6 py-3 whitespace-nowrap">
+                      <div class="text-sm text-gray-900">{{student.age}}</div>
+                    </td>
+                    <td class="px-6 py-3 whitespace-nowrap">
+                      <div class="text-sm text-gray-900">{{student.gender}}</div>
+                    </td>
+                    <td class="px-6 py-3 whitespace-nowrap text-center text-sm font-medium">
+                      <a href="{% url 'report' student.student_id %}" class="border-2 border-indigo-500 rounded-full px-2 text-indigo-600 hover:text-indigo-900"> View </a>
+                      <a href="{% url 'delete' student.student_id %}" class="border-2 border-red-500 rounded-full px-2 ml-5 text-red-600 hover:text-red-900"> Delete </a>
+                    </td>
+                   
+                   
+                  </tr>
+                  {% endfor %}
+                  
+
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Data Table Ended -->
+
+    </div>
+  </div>
+</section>
+
+<!-- Table Containing Data Ended -->
+
+<script type="text/javascript">
+
+document.getElementById('checkAll').onclick = function() {
+  var checkboxes = document.getElementsByName('chkbx');
+  for (var checkbox of checkboxes) {
+      checkbox.checked = this.checked;
+  }
+}
+
+//  Modal Class Of Send Email
+
+    var openmodal = document.querySelectorAll('.modal-open')
+    for (var i = 0; i < openmodal.length; i++) {
+      openmodal[i].addEventListener('click', function(event){
+    	event.preventDefault()
+    	toggleModal()
+      })
+    }
+    
+    const overlay = document.querySelector('.modal-overlay')
+    overlay.addEventListener('click', toggleModal)
+    
+    var closemodal = document.querySelectorAll('.modal-close')
+    for (var i = 0; i < closemodal.length; i++) {
+      closemodal[i].addEventListener('click', toggleModal)
+    }
+    
+    document.onkeydown = function(evt) {
+      evt = evt || window.event
+      var isEscape = false
+      if ("key" in evt) {
+    	isEscape = (evt.key === "Escape" || evt.key === "Esc")
+      } else {
+    	isEscape = (evt.keyCode === 27)
+      }
+      if (isEscape && document.body.classList.contains('modal-active')) {
+    	toggleModal()
+      }
+    };
+    
+    
+    function toggleModal () {
+      const body = document.querySelector('body')
+      const modal = document.querySelector('.modal')
+      modal.classList.toggle('opacity-0')
+      modal.classList.toggle('pointer-events-none')
+      body.classList.toggle('modal-active')
+    }
+ 
+
+</script>
+
+{% endblock body %}
+
+<!-- Body Ended -->
